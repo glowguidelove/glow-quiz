@@ -46,20 +46,27 @@ KIT_FORM_ID=                   # From Kit form setup
 
 ### 1. GitHub
 
-From the `glow-quiz` folder:
+This project’s repo: **https://github.com/glowguidelove/glow-quiz**
 
-```bash
-git init
-git add .
-git commit -m "Initial commit: GlowGuide quiz funnel"
+The `origin` remote is configured with the **`glowguidelove`** username in the URL so Windows Git Credential Manager can store credentials separately from other GitHub accounts on this PC:
+
+```text
+https://glowguidelove@github.com/glowguidelove/glow-quiz.git
 ```
 
-Create a new empty repository on GitHub (no README), then:
+**First-time push (Windows, multiple GitHub accounts)**
+
+1. Create a **Personal Access Token** while logged in as **glowguidelove**: GitHub → **Settings → Developer settings → Personal access tokens** → Fine-grained or classic with **repo** access.
+2. In this folder, run `git push -u origin main`. When prompted:
+   - **Username:** `glowguidelove`
+   - **Password:** paste the **token** (not your GitHub password).
+3. If Git still uses another account, open **Windows Credential Manager** → **Windows Credentials** → remove any `git:https://github.com` entries, then push again and sign in as **glowguidelove**.
+
+New clone from scratch:
 
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/glow-quiz.git
-git branch -M main
-git push -u origin main
+git clone https://github.com/glowguidelove/glow-quiz.git
+cd glow-quiz
 ```
 
 ### 2. Vercel
