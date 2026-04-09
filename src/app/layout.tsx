@@ -52,6 +52,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        <meta
+          name="impact-site-verification"
+          content="01e6a7b3-31c5-44ac-b588-f324eb5a0a55"
+        />
         <link rel="dns-prefetch" href="https://www.paulaschoice.com" />
         <link rel="dns-prefetch" href="https://theordinary.com" />
         <link rel="dns-prefetch" href="https://www.tula.com" />
