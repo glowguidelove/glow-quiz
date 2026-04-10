@@ -12,7 +12,7 @@ Quiz submissions POST to `/api/quiz/submit`, which adds the subscriber to **Kit*
    **Terminal:** from the project root, put `KIT_API_KEY` in `.env.local`, then run **`npm run kit:forms`** — it prints every form’s `id` and name.
 4. **Settings → Advanced** → copy your **API key** (v3 uses the same key for `api_key` on form subscribe).
 
-**Footer JavaScript embed (optional):** The site loads your Kit form in the footer via `next/script` (`src/components/KitFormEmbed.tsx`). The embed **UID** (e.g. `data-uid="a29559fc37"` from **Embed → JavaScript**) is set with **`NEXT_PUBLIC_KIT_EMBED_UID`** or defaults in code. Use the **same form** as `KIT_FORM_ID` so quiz + footer signups land on one list.
+Email signups happen **only** through the quiz (`/api/quiz/submit` → Kit). There is no separate footer form.
 
 ---
 

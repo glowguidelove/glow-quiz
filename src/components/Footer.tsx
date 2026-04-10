@@ -1,20 +1,9 @@
 import Link from "next/link";
-import KitFormEmbed from "@/components/KitFormEmbed";
 
 export default function Footer() {
   return (
     <footer className="w-full border-t border-border mt-auto py-8 bg-white/50">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="mb-8 pb-8 border-b border-border/80">
-          <p className="text-sm font-medium text-foreground text-center mb-3">
-            Skincare tips &amp; routine reminders
-          </p>
-          <p className="text-xs text-muted text-center mb-4 max-w-md mx-auto">
-            Get updates from GlowGuide — same list as the quiz when you subscribe
-            here or after your results.
-          </p>
-          <KitFormEmbed />
-        </div>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-lg">✨</span>

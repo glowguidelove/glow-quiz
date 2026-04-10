@@ -28,7 +28,6 @@ npm run dev
 | `src/lib/pixel.ts` | Meta Pixel + CAPI helpers |
 | `src/lib/kit.ts` | Kit (ConvertKit) subscribe + quiz tagging |
 | `docs/kit-email-setup.md` | **Email list:** Kit env vars, custom fields, tags, monetization |
-| `src/components/KitFormEmbed.tsx` | Kit footer newsletter (JS embed via `next/script`) |
 | `src/components/Quiz.tsx` | Main quiz component |
 | `src/components/ResultsDisplay.tsx` | Personalized results page |
 | `src/app/api/quiz/submit/route.ts` | Quiz submission API (Kit + CAPI) |

@@ -61,7 +61,6 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://theordinary.com" />
         <link rel="dns-prefetch" href="https://www.tula.com" />
         <link rel="dns-prefetch" href="https://eltamd.com" />
-        <link rel="dns-prefetch" href="https://glowguidelove.kit.com" />
       </head>
       <body className="min-h-full flex flex-col">
         <MetaPixel />

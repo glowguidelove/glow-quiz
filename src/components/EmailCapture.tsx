@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 interface EmailCaptureProps {
@@ -36,8 +37,13 @@ export default function EmailCapture({
         Your routine is ready!
       </h2>
       <p className="mt-3 text-muted max-w-md mx-auto">
-        Enter your email to see your personalized skincare routine and get
-        expert tips delivered weekly.
+        Enter your email to see your personalized skincare routine. We save your
+        quiz to your profile in our system so you can revisit your results, and we
+        may use your email for marketing and retargeting as described in our{" "}
+        <Link href="/privacy" className="text-primary hover:underline">
+          Privacy Policy
+        </Link>
+        .
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8 max-w-sm mx-auto">
@@ -80,7 +86,7 @@ export default function EmailCapture({
       </button>
 
       <p className="mt-6 text-xs text-muted/60 max-w-xs mx-auto">
-        We respect your privacy. Unsubscribe anytime. No spam, ever.
+        We respect your privacy. You can unsubscribe from marketing emails anytime.
       </p>
     </div>
   );
