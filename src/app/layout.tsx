@@ -56,6 +56,7 @@ export default function RootLayout({
           name="impact-site-verification"
           content="01e6a7b3-31c5-44ac-b588-f324eb5a0a55"
         />
+        <meta name="fo-verify" content="276265ee-ef07-4b5f-865d-d5ba0d939741" />
         <link rel="dns-prefetch" href="https://www.paulaschoice.com" />
         <link rel="dns-prefetch" href="https://theordinary.com" />
         <link rel="dns-prefetch" href="https://www.tula.com" />
