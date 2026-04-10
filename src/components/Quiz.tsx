@@ -113,7 +113,7 @@ export default function Quiz() {
       const routine = matchRoutine(fullAnswers);
       const eventId = generateEventId();
 
-      trackEvent("Lead", { content_name: "quiz_email_capture", event_id: eventId });
+      trackEvent("Lead", { content_name: "quiz_email_capture", eventID: eventId });
 
       try {
         await fetch("/api/quiz/submit", {
