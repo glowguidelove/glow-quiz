@@ -116,7 +116,7 @@ export default function Quiz() {
       trackEvent("Lead", { content_name: "quiz_email_capture" }, { eventID: eventId });
 
       try {
-        await fetch("/api/quiz/submit", {
+        const res = await fetch("/api/quiz/submit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -129,6 +129,14 @@ export default function Quiz() {
             fbp: getFbp(),
           }),
         });
+        const data = (await res.json()) as {
+          kitSubscribed?: boolean;
+        };
+        if (data.kitSubscribed === false) {
+          console.warn(
+            "GlowGuide: Kit did not confirm this email. Check Vercel env (KIT_API_KEY, KIT_FORM_ID) and Kit custom fields — see docs/kit-email-setup.md"
+          );
+        }
       } catch {
         // Non-blocking — still show results even if API call fails
       }

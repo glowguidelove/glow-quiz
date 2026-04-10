@@ -30,7 +30,6 @@ export async function POST(request: NextRequest) {
 
   const hashedEmail = await hashEmail(email);
 
-  // Subscribe to Kit (ConvertKit) with quiz data as custom fields
   const kitPromise = subscribeToKit({
     email,
     tags: tagsForQuizAnswers(answers),
@@ -46,7 +45,6 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // Fire server-side Meta CAPI Lead event (deduplicates with client-side via eventId)
   const capiPromise = sendServerEvent({
     event_name: "Lead",
     event_time: Math.floor(Date.now() / 1000),
@@ -69,8 +67,7 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // Fire both in parallel — neither should block the response
-  await Promise.allSettled([kitPromise, capiPromise]);
+  const [kitSubscribed] = await Promise.all([kitPromise, capiPromise]);
 
-  return NextResponse.json({ success: true, routineId });
+  return NextResponse.json({ success: true, routineId, kitSubscribed });
 }

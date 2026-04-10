@@ -14,6 +14,8 @@ Quiz submissions POST to `/api/quiz/submit`, which adds the subscriber to **Kit*
 
 Email signups happen **only** through the quiz (`/api/quiz/submit` → Kit). There is no separate footer form.
 
+**If subscribers don’t appear in Kit:** (1) Confirm **`KIT_API_KEY`** and **`KIT_FORM_ID`** on **Vercel** (Production) match the form you’re watching. (2) Custom field **keys** in Kit must exist — if the API rejects unknown fields, the app **retries with email only** so the contact should still land in Kit. (3) **Double opt-in** on the form can leave new signups **unconfirmed** until they click the email; check **Subscribers** / unconfirmed. (4) After a test, open the browser **Network** tab → **`submit`** response → **`kitSubscribed: true`** means Kit returned a subscription object.
+
 ---
 
 ## 2. Custom fields (required for personalization)
