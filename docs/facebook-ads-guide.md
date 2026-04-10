@@ -9,6 +9,8 @@
 5. **Facebook Page** for GlowGuide (needed to run ads)
 6. **Payment method** added to ad account
 
+**GlowGuide production:** Pixel + browser events, CAPI `Lead` with dedup, and quiz URL **`/quiz`** are live — use **GlowGuide Dataset** / your Pixel when Ads Manager asks for a data source.
+
 ---
 
 ## Phase 1: Data Collection (Weeks 1-2)
@@ -64,7 +66,7 @@ Science-backed recommendations. Zero guesswork.
 ```
 
 **CTA button:** "Learn More" or "Sign Up"
-**Landing page:** https://yoursite.com/quiz
+**Landing page:** https://glowguide.love/quiz (use the same domain you verified in Business settings, with or without `www` — stay consistent with `NEXT_PUBLIC_SITE_URL` on Vercel)
 
 ### Creative Tips for Beauty Ads
 
