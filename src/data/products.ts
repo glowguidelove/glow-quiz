@@ -52,7 +52,7 @@ export const routineProfiles: RoutineProfile[] = [
         name: "UV Clear Broad-Spectrum SPF 46",
         brand: "EltaMD",
         price: "$41",
-        affiliateUrl: "https://www.dermstore.com/eltamd-uv-clear-broad-spectrum-spf-46/11370556.html",
+        affiliateUrl: "https://sovrn.co/1271pss",
         imageUrl: "/products/eltamd-spf.jpg",
         whyThisProduct:
           "Dermatologist #1 pick for acne-prone skin. Oil-free, won't clog pores, and contains niacinamide to calm breakouts.",
@@ -276,7 +276,7 @@ export const routineProfiles: RoutineProfile[] = [
         name: "UV Clear Broad-Spectrum SPF 46",
         brand: "EltaMD",
         price: "$41",
-        affiliateUrl: "https://www.dermstore.com/eltamd-uv-clear-broad-spectrum-spf-46/11370556.html",
+        affiliateUrl: "https://sovrn.co/1271pss",
         imageUrl: "/products/eltamd-spf.jpg",
         whyThisProduct:
           "Lightweight, oil-free SPF with niacinamide that won't make your T-zone shiny or your cheeks flaky.",
