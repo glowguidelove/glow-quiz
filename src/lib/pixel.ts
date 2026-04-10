@@ -16,10 +16,16 @@ declare global {
 
 export function trackEvent(
   eventName: string,
-  params?: Record<string, unknown>
+  params?: Record<string, unknown>,
+  options?: { eventID?: string }
 ) {
   if (typeof window !== "undefined" && window.fbq) {
-    window.fbq("track", eventName, params);
+    const p = params ?? {};
+    if (options?.eventID) {
+      window.fbq("track", eventName, p, { eventID: options.eventID });
+    } else {
+      window.fbq("track", eventName, p);
+    }
   }
 }
 
