@@ -131,10 +131,16 @@ export default function Quiz() {
         });
         const data = (await res.json()) as {
           kitSubscribed?: boolean;
+          kitError?: string;
+          kitDetail?: string;
+          kitHttpStatus?: number;
         };
         if (data.kitSubscribed === false) {
           console.warn(
-            "GlowGuide: Kit did not confirm this email. Check Vercel env (KIT_API_KEY, KIT_FORM_ID) and Kit custom fields — see docs/kit-email-setup.md"
+            "GlowGuide: Kit subscribe failed.",
+            data.kitError ?? "?",
+            data.kitHttpStatus != null ? `HTTP ${data.kitHttpStatus}` : "",
+            data.kitDetail ?? ""
           );
         }
       } catch {

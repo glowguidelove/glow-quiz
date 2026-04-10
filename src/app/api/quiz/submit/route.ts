@@ -67,7 +67,16 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  const [kitSubscribed] = await Promise.all([kitPromise, capiPromise]);
+  const [kitResult] = await Promise.all([kitPromise, capiPromise]);
 
-  return NextResponse.json({ success: true, routineId, kitSubscribed });
+  return NextResponse.json({
+    success: true,
+    routineId,
+    kitSubscribed: kitResult.ok,
+    ...(!kitResult.ok && {
+      kitError: kitResult.error,
+      ...(kitResult.detail ? { kitDetail: kitResult.detail } : {}),
+      ...(kitResult.status != null ? { kitHttpStatus: kitResult.status } : {}),
+    }),
+  });
 }

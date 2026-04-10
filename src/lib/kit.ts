@@ -4,8 +4,13 @@
 
 import type { QuizAnswers, SkinConcern, SkinType } from "@/types";
 
-const KIT_API_KEY = process.env.KIT_API_KEY ?? "";
-const KIT_FORM_ID = process.env.KIT_FORM_ID ?? "";
+function envTrim(key: string): string {
+  const v = process.env[key];
+  return typeof v === "string" ? v.trim() : "";
+}
+
+const KIT_API_KEY = () => envTrim("KIT_API_KEY");
+const KIT_FORM_ID = () => envTrim("KIT_FORM_ID");
 
 interface SubscribeParams {
   email: string;
@@ -13,6 +18,25 @@ interface SubscribeParams {
   fields?: Record<string, string>;
   tags?: number[];
 }
+
+/** Safe to return to the client (no secrets). */
+export type KitSubscribeError =
+  | "missing_env"
+  | "network"
+  | "http"
+  | "bad_json"
+  | "no_subscription";
+
+export type KitSubscribeResult =
+  | { ok: true }
+  | {
+      ok: false;
+      error: KitSubscribeError;
+      /** HTTP status when error is `http` */
+      status?: number;
+      /** Short API message (truncated), for debugging */
+      detail?: string;
+    };
 
 function sanitizeFields(
   fields?: Record<string, string>
@@ -25,10 +49,16 @@ function sanitizeFields(
   return Object.keys(out).length > 0 ? out : undefined;
 }
 
+function truncateDetail(s: string, max = 180): string {
+  const t = s.replace(/\s+/g, " ").trim();
+  return t.length <= max ? t : `${t.slice(0, max)}…`;
+}
+
 async function postKitSubscribe(
+  formId: string,
   body: Record<string, unknown>
 ): Promise<{ ok: boolean; status: number; text: string }> {
-  const url = `https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`;
+  const url = `https://api.convertkit.com/v3/forms/${formId}/subscribe`;
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -38,18 +68,23 @@ async function postKitSubscribe(
   return { ok: response.ok, status: response.status, text };
 }
 
-export async function subscribeToKit(params: SubscribeParams): Promise<boolean> {
-  if (!KIT_API_KEY || !KIT_FORM_ID) {
+export async function subscribeToKit(
+  params: SubscribeParams
+): Promise<KitSubscribeResult> {
+  const apiKey = KIT_API_KEY();
+  const formId = KIT_FORM_ID();
+
+  if (!apiKey || !formId) {
     console.warn("Kit: Missing API key or form ID. Skipping subscription.");
-    return false;
+    return { ok: false, error: "missing_env" };
   }
 
   const fields = sanitizeFields(params.fields);
   const tags =
     params.tags && params.tags.length > 0 ? params.tags : undefined;
 
-  const withFields: Record<string, unknown> = {
-    api_key: KIT_API_KEY,
+  const fullPayload: Record<string, unknown> = {
+    api_key: apiKey,
     email: params.email,
     ...(params.firstName ? { first_name: params.firstName } : {}),
     ...(fields ? { fields } : {}),
@@ -57,42 +92,58 @@ export async function subscribeToKit(params: SubscribeParams): Promise<boolean> 
   };
 
   const emailOnly: Record<string, unknown> = {
-    api_key: KIT_API_KEY,
+    api_key: apiKey,
     email: params.email,
   };
 
-  try {
-    let { ok, status, text } = await postKitSubscribe(withFields);
+  const hadExtras = !!(fields || tags);
 
-    if (!ok && fields) {
+  try {
+    let { ok, status, text } = await postKitSubscribe(formId, fullPayload);
+
+    if (!ok && hadExtras) {
       console.warn(
-        "Kit: subscribe with quiz fields failed; retrying email-only. Status:",
+        "Kit: full subscribe failed; retrying email-only. Status:",
         status,
         text
       );
-      ({ ok, status, text } = await postKitSubscribe(emailOnly));
+      ({ ok, status, text } = await postKitSubscribe(formId, emailOnly));
     }
 
     if (!ok) {
       console.error("Kit subscription error:", status, text);
-      return false;
+      return {
+        ok: false,
+        error: "http",
+        status,
+        detail: truncateDetail(text),
+      };
     }
 
+    let data: { subscription?: unknown };
     try {
-      const data = JSON.parse(text) as { subscription?: unknown };
-      if (!data.subscription) {
-        console.error("Kit: unexpected response (no subscription):", text);
-        return false;
-      }
+      data = JSON.parse(text) as { subscription?: unknown };
     } catch {
-      console.error("Kit: invalid JSON response:", text);
-      return false;
+      return {
+        ok: false,
+        error: "bad_json",
+        detail: truncateDetail(text),
+      };
     }
 
-    return true;
+    if (!data.subscription) {
+      console.error("Kit: unexpected response (no subscription):", text);
+      return {
+        ok: false,
+        error: "no_subscription",
+        detail: truncateDetail(text),
+      };
+    }
+
+    return { ok: true };
   } catch (error) {
     console.error("Kit subscription failed:", error);
-    return false;
+    return { ok: false, error: "network" };
   }
 }
 
