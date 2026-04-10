@@ -28,7 +28,7 @@ const steps = [
 const brands = [
   "Paula's Choice",
   "The Ordinary",
-  "CeraVe",
+  "Neutrogena",
   "La Roche-Posay",
   "EltaMD",
   "TULA",

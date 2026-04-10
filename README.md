@@ -26,7 +26,9 @@ npm run dev
 | `src/data/products.ts` | Product recommendation database with affiliate links |
 | `src/lib/scoring.ts` | Quiz answer → routine matching algorithm |
 | `src/lib/pixel.ts` | Meta Pixel + CAPI helpers |
-| `src/lib/kit.ts` | Kit (ConvertKit) API integration |
+| `src/lib/kit.ts` | Kit (ConvertKit) subscribe + quiz tagging |
+| `docs/kit-email-setup.md` | **Email list:** Kit env vars, custom fields, tags, monetization |
+| `src/components/KitFormEmbed.tsx` | Kit footer newsletter (JS embed via `next/script`) |
 | `src/components/Quiz.tsx` | Main quiz component |
 | `src/components/ResultsDisplay.tsx` | Personalized results page |
 | `src/app/api/quiz/submit/route.ts` | Quiz submission API (Kit + CAPI) |
@@ -36,11 +38,14 @@ npm run dev
 ## Environment Variables
 
 ```
+NEXT_PUBLIC_SITE_URL=          # Production URL (emails, OG, sitemap)
 NEXT_PUBLIC_META_PIXEL_ID=     # From Meta Events Manager
 META_CONVERSIONS_API_TOKEN=    # From Meta Events Manager
-KIT_API_KEY=                   # From Kit account settings
-KIT_FORM_ID=                   # From Kit form setup
+KIT_API_KEY=                   # Kit — required for quiz email capture
+KIT_FORM_ID=                   # Kit — quiz opt-in form numeric ID
 ```
+
+**Email conversions:** Without `KIT_API_KEY` and `KIT_FORM_ID`, quiz completes but subscribers are **not** added to Kit. Follow **`docs/kit-email-setup.md`** (custom fields, tag IDs in `src/lib/kit.ts`, Vercel env).
 
 ## Deploy to Vercel (production: glowguide.love)
 

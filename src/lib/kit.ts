@@ -1,6 +1,8 @@
 // Kit (ConvertKit) API integration
-// Get your API key from: https://app.kit.com/account/edit
-// Create a form in Kit and use its ID below.
+// Setup: see docs/kit-email-setup.md
+// API key: https://app.kit.com/account/edit
+
+import type { QuizAnswers, SkinConcern, SkinType } from "@/types";
 
 const KIT_API_KEY = process.env.KIT_API_KEY ?? "";
 const KIT_FORM_ID = process.env.KIT_FORM_ID ?? "";
@@ -20,17 +22,22 @@ export async function subscribeToKit(params: SubscribeParams): Promise<boolean> 
 
   const url = `https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`;
 
+  const payload: Record<string, unknown> = {
+    api_key: KIT_API_KEY,
+    email: params.email,
+    first_name: params.firstName,
+    fields: params.fields,
+  };
+
+  if (params.tags && params.tags.length > 0) {
+    payload.tags = params.tags;
+  }
+
   try {
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        api_key: KIT_API_KEY,
-        email: params.email,
-        first_name: params.firstName,
-        fields: params.fields,
-        tags: params.tags,
-      }),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -46,8 +53,11 @@ export async function subscribeToKit(params: SubscribeParams): Promise<boolean> 
   }
 }
 
-// Tag IDs — create these in Kit and update the values here.
-// Used to segment subscribers for targeted email sequences.
+/**
+ * Tag IDs from Kit: Settings → Tags → open tag → ID is in the URL or use
+ * GET https://api.convertkit.com/v3/tags?api_key=YOUR_KEY
+ * Replace `0` with real IDs; zeros are skipped (feature off until you configure).
+ */
 export const KIT_TAGS = {
   quizCompleter: 0,
   skinTypeOily: 0,
@@ -61,3 +71,34 @@ export const KIT_TAGS = {
   concernRedness: 0,
   concernDullness: 0,
 } as const;
+
+const SKIN_TAG_KEY: Record<SkinType, keyof typeof KIT_TAGS> = {
+  oily: "skinTypeOily",
+  dry: "skinTypeDry",
+  combination: "skinTypeCombination",
+  sensitive: "skinTypeSensitive",
+  normal: "skinTypeNormal",
+};
+
+const CONCERN_TAG_KEY: Record<SkinConcern, keyof typeof KIT_TAGS> = {
+  acne: "concernAcne",
+  aging: "concernAging",
+  "dark-spots": "concernDarkSpots",
+  redness: "concernRedness",
+  dullness: "concernDullness",
+};
+
+/** Resolves quiz answers to Kit tag IDs (deduped). Only IDs greater than 0 are applied. */
+export function tagsForQuizAnswers(answers: QuizAnswers): number[] {
+  const out: number[] = [];
+
+  const push = (id: number) => {
+    if (id > 0) out.push(id);
+  };
+
+  push(KIT_TAGS.quizCompleter);
+  push(KIT_TAGS[SKIN_TAG_KEY[answers.skinType]]);
+  push(KIT_TAGS[CONCERN_TAG_KEY[answers.concern]]);
+
+  return [...new Set(out)];
+}

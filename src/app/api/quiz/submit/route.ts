@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { subscribeToKit } from "@/lib/kit";
+import { subscribeToKit, tagsForQuizAnswers } from "@/lib/kit";
 import { sendServerEvent, hashEmail } from "@/lib/pixel";
 import type { QuizAnswers } from "@/types";
 
@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
   // Subscribe to Kit (ConvertKit) with quiz data as custom fields
   const kitPromise = subscribeToKit({
     email,
+    tags: tagsForQuizAnswers(answers),
     fields: {
       skin_type: answers.skinType,
       skin_concern: answers.concern,
