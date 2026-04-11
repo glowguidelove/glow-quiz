@@ -182,6 +182,8 @@ Use **HTML** paragraphs or **Markdown** sections per branch depending on what yo
 
 **If raw Liquid** (`{% … %}`) **appears in the received email:** Switch to **Option B**, or paste with **paste without formatting** (Ctrl+Shift+V), one `case` block, `{% assign %}` / `{% case %}` / `{% endcase %}` each on its **own line**, and avoid broken markdown like `**you:**Salicylic**` (no space after colon inside bold).
 
+**If random letters** show wrong colors or float above the line (broken typography): Kit’s editor often breaks when Markdown **bold** wraps **merge tags** (`{{ … }}`), or when bold and italic mix in one paragraph. **Don’t** wrap Liquid in bold; use plain merge tags and bold only fixed words. Re-paste from **`docs/email-sequences.md`** or strip formatting in Kit and re-apply bold manually.
+
 ---
 
 ## Quick checklist

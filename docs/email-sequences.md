@@ -91,10 +91,12 @@ The GlowGuide Team
 
 One body, **no** Liquid logic — only `{{ }}`. Use **`skin_concern_label`** for readable copy (e.g. “Dark spots”); it’s set by the quiz API. **`default`** covers older subscribers who only have the slug field.
 
+**Kit rendering:** Do **not** wrap `{{ … }}` merge tags in `**bold**` — Kit often splits the line into broken HTML spans and you’ll see **random letter colors / misaligned characters**. Keep merge tags **plain**; bold only static words.
+
 ```
 Hey {{ subscriber.first_name | default: "there" }},
 
-A couple of days ago you told us your top focus is **{{ subscriber.skin_concern_label | default: subscriber.skin_concern }}** — here’s what’s going on **under the surface**, and why the *right* products move the needle faster than random tries.
+A couple of days ago you told us your top focus is {{ subscriber.skin_concern_label | default: subscriber.skin_concern }} — here’s what’s going on **under the surface**, and why the **right** products move the needle faster than random tries.
 
 ---
 
@@ -106,7 +108,7 @@ Most skin goals come down to **barrier health**, **consistent actives** at sensi
 
 ### Where to look next
 
-Your personalized routine spells out **which ingredients** we’re leaning on for *your* profile and why — at concentrations that are meant to do something, not just decorate a label.
+Your personalized routine spells out **which ingredients** we’re leaning on for **your** profile and why — at concentrations that are meant to do something, not just decorate a label.
 
 **[See your full routine again →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
 
@@ -196,13 +198,13 @@ GlowGuide
 ```
 Hey {{ subscriber.first_name | default: "there" }},
 
-**{{ subscriber.skin_type }} skin** has a classic pitfall — most people don’t realize they’re making it worse.
+Skin type {{ subscriber.skin_type }} has a classic pitfall — most people don’t realize they’re making it worse.
 
 ---
 
 ### The mistake
 
-[One clear mistake for **{{ subscriber.skin_type }}** — e.g. oily: stripping + skipping moisturizer; dry: hot water + harsh cleansers; sensitive: too many actives at once; combination: one texture everywhere.]
+[One clear mistake for {{ subscriber.skin_type }} skin — e.g. oily: stripping + skipping moisturizer; dry: hot water + harsh cleansers; sensitive: too many actives at once; combination: one texture everywhere.]
 
 ---
 
