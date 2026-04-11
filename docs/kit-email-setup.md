@@ -202,6 +202,17 @@ Use **HTML** paragraphs or **Markdown** sections per branch depending on what yo
 
 **Tests:** After DNS propagates, send **real** test emails to **Gmail**, **Outlook**, and **Apple Mail** and check **Promotions vs Primary vs Spam**. One test is not enough — inbox placement varies.
 
+**When Kit shows “Verify your sending domain” (DNS table):**
+
+1. **Open DNS where `glowguide.love` is managed** — the registrar (Namecheap, GoDaddy, etc.) or **Cloudflare** if the domain uses it for DNS. (Vercel-only projects sometimes use the registrar or Cloudflare for DNS — add records **there**, not inside the Vercel app UI unless that’s where DNS lives.)
+2. **Create each row exactly as Kit lists** — same **Type** (CNAME / TXT), **Name / Host** (some panels want only `ckespa` or `cka._domainkey`; others auto-append your domain — follow your host’s docs), and **Value / Target** (full hostname Kit shows, e.g. `…convertkit.com`).
+3. **Cloudflare:** Set these records to **DNS only** (grey cloud), not **Proxied** (orange), or mail authentication often breaks.
+4. **Save** all records, wait **a few minutes to an hour** (sometimes longer). TTL affects propagation.
+5. In Kit, click **Validate** (or refresh and validate). When it passes, the domain is verified for sending.
+6. **Add a From address** like `hello@glowguide.love` under **Email addresses** and set it **Default**. Receiving mail at that inbox is optional (Workspace, forwarding, etc.); Kit only needs the address for **sending** identity once DNS is good.
+
+If your host supports it, **Set this up for me** in Kit can connect the account and add records automatically — otherwise manual copy-paste is fine.
+
 ---
 
 ## Quick checklist
