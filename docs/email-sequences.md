@@ -77,30 +77,76 @@ The GlowGuide Team
 
 ### Email 2 — Day 2: "Why their concern happens + what fixes it"
 
-**Subject:** The real reason your {{ subscriber.skin_concern }} keeps showing up (and what helps)
+**Subject:** What’s really going on with your skin (and one ingredient that matters)
 
-**Preview:** Plus the one ingredient that changes everything
+**Preview:** Practical science — matched to your quiz results
+
+**Kit:** Set this step to send **2 days** after the previous email. Paste the block below (Liquid branches use exact `skin_concern` values from the quiz: `acne`, `aging`, `dark-spots`, `redness`, `dullness`).
 
 ```
 Hey {{ subscriber.first_name | default: "there" }},
 
-A couple of days ago you said your biggest focus is **{{ subscriber.skin_concern }}**. Here’s what’s going on under the surface — and why the *right* products move the needle so much faster than random tries.
+A couple of days ago you told us what you’re focused on — here’s what’s going on **under the surface**, and why the *right* products move the needle so much faster than random tries.
 
 ---
 
 ### What’s really happening
 
-[Insert 3–4 short paragraphs of education tailored to **{{ subscriber.skin_concern }}** — root causes, what makes it flare, what “good” looks like after a few weeks.]
+{% if subscriber.skin_concern == "acne" %}
+Clogged pores + bacteria + oil production are the classic trio behind breakouts. Stress, hormones, and heavy occlusive products can tip you into new spots — even when you’re “doing everything right.”
+
+The goal isn’t to wage war on your face daily; it’s to **clear congestion gently**, keep bacteria in check, and support your barrier so your skin can heal between flares. After a few consistent weeks, you’re usually looking for fewer new lesions, calmer texture, and less post-breakout staining.
+
+{% elsif subscriber.skin_concern == "aging" %}
+Fine lines and loss of firmness usually come from a mix of **collagen slowdown**, sun damage, and dehydration — not from “bad genes” alone. Skin can look older faster when the barrier is stressed or when actives are skipped in favor of heavy creams that don’t actually treat causes.
+
+What “good” looks like: **smoother texture**, more even tone, and skin that feels bouncier — typically over several weeks as cell turnover and collagen support catch up. Consistency beats intensity; your routine is built around that idea.
+
+{% elsif subscriber.skin_concern == "dark-spots" %}
+Dark marks are often **melanin** deposited after breakouts, sun, or irritation — not only “hyperpigmentation” in the abstract. Picking, friction, and UV without SPF can make spots linger for months.
+
+Progress is real when you pair **sun protection** with ingredients that slow excess pigment and even tone — most people notice a shift in *patchiness* before spots vanish completely. Patience + the right actives beats harsh scrubbing.
+
+{% elsif subscriber.skin_concern == "redness" %}
+Persistent redness is often a **barrier** and **reactivity** story — heat, harsh cleansers, strong acids, and even overwashing can keep you flushed. Sometimes there’s rosacea-style sensitivity; sometimes it’s simply a stripped barrier yelling for calm.
+
+The win is skin that **stays calmer day to day** — less sting after products, less patchy flush, and texture that feels less “angry.” That usually comes from fewer triggers + barrier-friendly care, not from piling on new actives every night.
+
+{% elsif subscriber.skin_concern == "dullness" %}
+Dullness is usually **dead cell buildup**, uneven texture, dehydration, or a mix — so skin doesn’t reflect light evenly. It’s not always “lack of glow serum”; often it’s exfoliation balance + moisture + sun protection.
+
+After a few weeks of the right rhythm, people usually see **brighter tone** and smoother makeup application — your skin looks more “lit from within” when the surface is even and hydrated.
+
+{% else %}
+Everyone’s skin story is a little different — but almost always, progress comes from **consistent** steps matched to your goals, not from constantly swapping products. Your quiz results narrow that down for you.
+
+{% endif %}
 
 ---
 
 ### The ingredient that matters for you
 
-**Hero ingredient:** [Name the star ingredient from their recommended routine — e.g. niacinamide, retinoid, azelaic acid]
+{% if subscriber.skin_concern == "acne" %}
+**Hero focus:** **Salicylic acid (BHA)** or **niacinamide** — depending on your routine — for congestion and oil balance without wrecking your barrier.
 
-**Why we picked [Product name] for you:** it delivers that ingredient at a **useful** concentration — not label dressing.
+{% elsif subscriber.skin_concern == "aging" %}
+**Hero focus:** **Retinoids / retinol** (where appropriate) or **peptides** — your routine highlights what fits *your* sensitivity and goals.
 
-**[See your full routine again →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
+{% elsif subscriber.skin_concern == "dark-spots" %}
+**Hero focus:** **Niacinamide**, **vitamin C**, or **azelaic acid** — chosen to target uneven tone without stripping.
+
+{% elsif subscriber.skin_concern == "redness" %}
+**Hero focus:** **Niacinamide**, **azelaic acid**, or **barrier-support** ingredients — calm first, actives second.
+
+{% elsif subscriber.skin_concern == "dullness" %}
+**Hero focus:** **Gentle exfoliation (AHAs)** or **vitamin C** — paired with hydration so skin looks bright, not stripped.
+
+{% else %}
+**Hero focus:** Ingredients matched in **your** personalized routine — see the link below for exact picks.
+
+{% endif %}
+
+Your GlowGuide routine calls out **useful** concentrations — not label dressing. **[See your full routine again →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
 
 ---
 
