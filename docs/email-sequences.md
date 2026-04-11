@@ -3,6 +3,12 @@
 Set these up in Kit (ConvertKit) as automated sequences.
 Each sequence triggers based on quiz completion data stored as subscriber custom fields.
 
+**Kit Liquid:** Use `{{ subscriber.field_key }}` for custom fields (e.g. `{{ subscriber.routine_id }}`, `{{ subscriber.skin_type }}`). First name: `{{ subscriber.first_name | default: "there" }}` — use the **`default`** filter (not `||`, which isn’t valid Liquid). Match keys to **`docs/kit-email-setup.md`**.
+
+**Markdown in Kit:** Subjects are plain text. Bodies below use Markdown (`**bold**`, lists, `---` dividers); paste into Kit’s Markdown-capable editor.
+
+**Results links:** `https://glowguide.love/quiz/results?r={{ subscriber.routine_id }}` (or `www` if that’s your canonical domain everywhere).
+
 ---
 
 ## Sequence 1: Quiz Results Delivery (All subscribers)
@@ -11,122 +17,147 @@ Each sequence triggers based on quiz completion data stored as subscriber custom
 
 ### Email 1 — Instant: "Your Personalized Skincare Routine"
 
-**Subject:** Your skincare routine is ready, {{subscriber.first_name || "gorgeous"}} ✨
-**Preview:** Matched to your {{skin_type}} skin + {{skin_concern}} concern
+**Subject:** Your skincare routine is ready, {{ subscriber.first_name | default: "gorgeous" }} ✨
+
+**Preview:** Matched to your {{ subscriber.skin_type }} skin · {{ subscriber.skin_concern }}
 
 ```
-Hey {{subscriber.first_name || "there"}}!
+Hey {{ subscriber.first_name | default: "there" }},
 
-You just took the GlowGuide Skin Quiz — and we've matched you with a
-routine built specifically for your skin.
+You just took the **GlowGuide Skin Quiz** — we’ve matched you with a routine built for **your** skin, not a one-size-fits-all checklist.
 
-Here's your personalized routine:
+---
 
-👉 [View Your Full Routine](https://yoursite.com/quiz/results?r={{routine_id}})
+### Your routine is ready
 
-Quick recap of your profile:
-• Skin type: {{skin_type}}
-• Top concern: {{skin_concern}}
-• Budget: {{budget}}
+Step-by-step picks, honest why-we-chose-it notes, and **shop links** on every product.
 
-Your routine includes step-by-step product recommendations with
-links to shop each one.
+**[View your full routine →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
 
-Questions? Just reply to this email — we read every one.
+---
 
-To glowing skin,
+### Your profile at a glance
+
+- **Skin type:** {{ subscriber.skin_type }}
+- **Top concern:** {{ subscriber.skin_concern }}
+- **Budget:** {{ subscriber.budget }}
+
+---
+
+*Got a question?* Hit reply — a real human reads these.
+
+**To glowing skin,**  
 The GlowGuide Team
 ```
 
 ---
 
-### Email 2 — Day 2: "Why {{concern}} Happens + What Actually Fixes It"
+### Email 2 — Day 2: "Why their concern happens + what fixes it"
 
-**Subject:** The real reason your skin {{concern_phrase}} (and what to do)
+**Subject:** The real reason your {{ subscriber.skin_concern }} keeps showing up (and what helps)
+
 **Preview:** Plus the one ingredient that changes everything
 
 ```
-Hey {{subscriber.first_name || "there"}},
+Hey {{ subscriber.first_name | default: "there" }},
 
-A couple days ago you told us your biggest concern is {{skin_concern}}.
+A couple of days ago you said your biggest focus is **{{ subscriber.skin_concern }}**. Here’s what’s going on under the surface — and why the *right* products move the needle so much faster than random tries.
 
-Here's what's actually going on beneath the surface — and why the
-right products make such a dramatic difference.
+---
 
-[Insert 3-4 paragraphs of educational content about their specific concern]
+### What’s really happening
 
-The key ingredient for {{skin_concern}}:
-[Name the star ingredient from their recommended routine]
+[Insert 3–4 short paragraphs of education tailored to **{{ subscriber.skin_concern }}** — root causes, what makes it flare, what “good” looks like after a few weeks.]
 
-This is exactly why we recommended [Product Name] in your routine —
-it contains [ingredient] at an effective concentration.
+---
 
-👉 [See your full routine again](https://yoursite.com/quiz/results?r={{routine_id}})
+### The ingredient that matters for you
 
-To clearer days,
+**Hero ingredient:** [Name the star ingredient from their recommended routine — e.g. niacinamide, retinoid, azelaic acid]
+
+**Why we picked [Product name] for you:** it delivers that ingredient at a **useful** concentration — not label dressing.
+
+**[See your full routine again →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
+
+---
+
+**To clearer days,**  
 GlowGuide
 ```
 
 ---
 
-### Email 3 — Day 5: "The #1 Mistake People With {{skin_type}} Skin Make"
+### Email 3 — Day 5: "The #1 mistake for their skin type"
 
-**Subject:** Stop doing this to your {{skin_type}} skin 🚫
-**Preview:** It's probably in your routine right now
+**Subject:** Stop doing this to your {{ subscriber.skin_type }} skin 🚫
+
+**Preview:** It might already be in your routine
 
 ```
-Hey {{subscriber.first_name || "there"}},
+Hey {{ subscriber.first_name | default: "there" }},
 
-The biggest mistake people with {{skin_type}} skin make?
+**{{ subscriber.skin_type }} skin** has a classic pitfall — most people don’t realize they’re making it worse.
 
-[Insert specific mistake for their skin type, e.g.:
-- Oily: Over-washing and skipping moisturizer (makes oil worse)
-- Dry: Using hot water and harsh cleansers (destroys barrier)
-- Sensitive: Layering too many actives at once (triggers reactions)
-- Combination: Using the same products everywhere (wrong approach)]
+---
 
-Here's what to do instead:
-[2-3 actionable tips]
+### The mistake
 
-Your recommended [Cleanser/Moisturizer name] is designed specifically
-to avoid this problem because [reason].
+[One clear mistake for **{{ subscriber.skin_type }}** — e.g. oily: stripping + skipping moisturizer; dry: hot water + harsh cleansers; sensitive: too many actives at once; combination: one texture everywhere.]
 
-👉 [Shop your recommended routine](https://yoursite.com/quiz/results?r={{routine_id}})
+---
 
-GlowGuide
+### Do this instead
+
+- [Actionable tip 1]
+- [Actionable tip 2]
+- [Actionable tip 3]
+
+**Your routine’s [cleanser / moisturizer / treatment]** is there to sidestep this: [one sentence — barrier support, oil balance, gentler actives, etc.].
+
+**[Shop your recommended routine →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
+
+---
+
+**GlowGuide**
 ```
 
 ---
 
 ### Email 4 — Day 10: "Real Results After 30 Days"
 
-**Subject:** What happens after 30 days with the right routine
-**Preview:** Before and after (the science behind it)
+**Subject:** What actually happens in the first 30 days
+
+**Preview:** The week-by-week timeline (no fluff)
 
 ```
-Hey {{subscriber.first_name || "there"}},
+Hey {{ subscriber.first_name | default: "there" }},
 
-Wondering if a new routine actually makes a difference?
+New routine — **does anything really change?** Here’s the honest week-by-week picture (and why patience beats panic-purchasing).
 
-Here's what the research shows happens in the first 30 days:
+---
 
-Week 1: Your skin adjusts. You might notice slight changes in
-texture as your new products start working.
+### Your first 30 days
 
-Week 2: Active ingredients (like [their recommended treatment])
-begin showing visible results. Pores look smaller, tone evens out.
+**Week 1 — Adjustment**  
+Texture and feel can shift first; a little purging or dryness can happen as skin recalibrates.
 
-Week 3-4: This is where the magic happens. Cell turnover has
-completed a full cycle with your new products.
+**Week 2 — Actives kick in**  
+Ingredients like **[their recommended treatment / e.g. retinoid, exfoliant]** start to show up in clarity, tone, or congestion.
 
-The key? Consistency. Your skin needs 28 days for a full cell
-turnover cycle.
+**Weeks 3–4 — Turnover catches up**  
+Roughly **one full cell cycle** (~28 days) — this is where steady routines pull ahead of “I tried it twice.”
 
-Ready to start your 30-day transformation?
+---
 
-👉 [Shop your personalized routine](https://yoursite.com/quiz/results?r={{routine_id}})
+### The non-negotiable
 
-GlowGuide
+**Consistency** beats intensity. Same routine, most days — that’s the win.
+
+**[Open your personalized routine →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
+
+---
+
+**GlowGuide**
 ```
 
 ---
