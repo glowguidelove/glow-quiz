@@ -9,9 +9,7 @@ Each sequence triggers based on quiz completion data stored as subscriber custom
 
 Use the **`default`** filter (not `||`, which isn’t valid Liquid). The **pipe `|` is required** between `first_name` and `default`. If Kit merges the tag into `first_namedefault` after paste, the `|` was dropped — delete the tag and retype the `|` by hand. Match keys to **`docs/kit-email-setup.md`**.
 
-**Markdown in Kit:** Subjects are plain text. **Markdown cannot set text colors** — only bold, italics, lists, and dividers. For **exact brand colors**, use the **HTML + Liquid** blocks below (`<span style="color: #…">`). Kit’s editor usually accepts HTML in the body (use **HTML** or **custom** mode if a Markdown-only view strips tags). Paste once, then send a test — if colors vanish, switch the email to an HTML-capable template or insert via Kit’s “HTML” snippet option.
-
-**Plain Markdown (no colors):** Some emails below include a Markdown-only variant for reference; the **branded paste** is the HTML block.
+**Markdown in Kit:** Subjects are plain text. Bodies below use Markdown (`**bold**`, lists, `---` dividers); paste into Kit’s Markdown-capable editor. **Colors:** Markdown doesn’t support hex — apply brand colors with Kit’s **Text color** tool using the table below (or template link color when available).
 
 **Results links:** `https://glowguide.love/quiz/results?r={{ subscriber.routine_id }}` (or `www` if that’s your canonical domain everywhere).
 
@@ -43,45 +41,6 @@ Skip coloring every bullet and the footer — neutral body + **one** brand accen
 **Subject:** Your skincare routine is ready, {{ subscriber.first_name | default: "gorgeous" }} ✨
 
 **Preview:** Matched to your {{ subscriber.skin_type }} skin · {{ subscriber.skin_concern }}
-
-**Paste — HTML + Liquid (branded colors: rose `#D4849A`, gold `#C9A96E`, body `#2D2D2D`, links `#B8647E`, rules `#E8E0D8`):**
-
-```html
-<div style="color:#2D2D2D;">
-
-<p>Hey {{ subscriber.first_name | default: "there" }},</p>
-
-<p>You just took the <span style="color:#D4849A;"><strong>GlowGuide Skin Quiz</strong></span> &mdash; we've matched you with a routine built for <span style="color:#C9A96E;"><strong>your</strong></span> skin, not a one-size-fits-all checklist.</p>
-
-<hr style="border:none;border-top:1px solid #E8E0D8;margin:1.25em 0;" />
-
-<p><strong style="color:#D4849A;">Your routine is ready</strong></p>
-
-<p>Step-by-step picks, honest notes on <span style="color:#C9A96E;"><strong>why we chose each product</strong></span>, and <span style="color:#C9A96E;"><strong>shop links</strong></span> on every step.</p>
-
-<p><a href="https://glowguide.love/quiz/results?r={{ subscriber.routine_id }}" style="color:#B8647E;">View your full routine &rarr;</a></p>
-
-<hr style="border:none;border-top:1px solid #E8E0D8;margin:1.25em 0;" />
-
-<p><strong>Your profile at a glance</strong></p>
-
-<ul>
-<li><strong>Skin type:</strong> {{ subscriber.skin_type }}</li>
-<li><strong>Top concern:</strong> {{ subscriber.skin_concern }}</li>
-<li><strong>Budget:</strong> {{ subscriber.budget }}</li>
-</ul>
-
-<hr style="border:none;border-top:1px solid #E8E0D8;margin:1.25em 0;" />
-
-<p style="font-style:italic;">Got a question? Hit reply &mdash; a real human reads these.</p>
-
-<p><strong style="color:#D4849A;">To glowing skin,</strong><br />
-The GlowGuide Team</p>
-
-</div>
-```
-
-**Paste — Markdown only (no colors; use if Kit strips HTML):**
 
 ```
 Hey {{ subscriber.first_name | default: "there" }},
