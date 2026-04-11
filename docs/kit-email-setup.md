@@ -24,7 +24,8 @@ Kit only accepts field **keys** that already exist on your account. Create custo
 
 | Key | Example value | Use |
 |-----|----------------|-----|
-| `skin_type` | `oily` | Segmentation, copy |
+| `skin_type` | `oily` | Segmentation, copy (slug) |
+| `skin_type_label` | `Oily` | Human-readable skin type for emails (set by API) |
 | `skin_concern` | `acne` | Sequences by concern (slug) |
 | `skin_concern_label` | `Dark spots` | Human-readable concern for email copy (set by API) |
 | `sensitivity` | `somewhat` | |

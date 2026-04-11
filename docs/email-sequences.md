@@ -191,32 +191,42 @@ GlowGuide
 
 ### Email 3 — Day 5: "The #1 mistake for their skin type"
 
-**Subject:** Stop doing this to your {{ subscriber.skin_type }} skin 🚫
+**Subject:** Stop doing this to your {{ subscriber.skin_type_label | default: subscriber.skin_type }} skin 🚫
 
-**Preview:** It might already be in your routine
+**Preview:** The habit that works against you
+
+**Kit:** Send **3 days** after Email 2 (day 5 from sequence start). Same rules as Email 2 Option B: **merge tags only**, no `{% %}`, and **do not** wrap `{{ … }}` in `**bold**` (Kit span glitches).
+
+Create custom field **`skin_type_label`** in Kit (API sends it — see **`docs/kit-email-setup.md`**).
 
 ```
 Hey {{ subscriber.first_name | default: "there" }},
 
-Skin type {{ subscriber.skin_type }} has a classic pitfall — most people don’t realize they’re making it worse.
+By now you’ve had a few days with your GlowGuide routine. Here’s the habit that trips people up most when their skin reads as {{ subscriber.skin_type_label | default: subscriber.skin_type }} on the quiz — and the small shifts that matter more than buying something new.
 
 ---
 
-### The mistake
+### The slip-up we see most
 
-[One clear mistake for {{ subscriber.skin_type }} skin — e.g. oily: stripping + skipping moisturizer; dry: hot water + harsh cleansers; sensitive: too many actives at once; combination: one texture everywhere.]
+We reach for **stronger** when what we need is **smarter**. Harsh cleansers, constant exfoliation, or skipping moisturizer when skin feels tight can all push things into a worse loop — more irritation, more oil, or tightness that won’t quit.
+
+Your quiz profile is built around **balance**: what your skin type actually needs day to day, not what’s loudest on social.
 
 ---
 
 ### Do this instead
 
-- [Actionable tip 1]
-- [Actionable tip 2]
-- [Actionable tip 3]
+- **Simplify before you amplify.** One change at a time so you know what helped.
+- **Match weight to texture.** Lighter layers where you’re oily; richer where you’re dry; calm formulas first if you’re reactive.
+- **Let the routine settle.** Give steady use a few weeks before you swap steps.
 
-**Your routine’s [cleanser / moisturizer / treatment]** is there to sidestep this: [one sentence — barrier support, oil balance, gentler actives, etc.].
+---
 
-**[Shop your recommended routine →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
+### Your routine is the shortcut
+
+Your picks are already sequenced for **your** profile — step by step, with shop links on each product.
+
+**[See your recommended routine →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
 
 ---
 
@@ -290,6 +300,7 @@ embedded in the educational content.
 1. Create a Form (use the Form ID in .env)
 2. Create Custom Fields:
    - skin_type
+   - skin_type_label
    - skin_concern
    - skin_concern_label
    - sensitivity
