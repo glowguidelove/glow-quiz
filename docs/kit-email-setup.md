@@ -161,16 +161,25 @@ Use **HTML** paragraphs or **Markdown** sections per branch depending on what yo
 
 ## 8. Troubleshooting: Liquid (`else` branch, or raw `{%` tags in the inbox)
 
-Sequence emails use **one** `{% case subscriber.skin_concern %}` … `{% endcase %}` block (see **`docs/email-sequences.md`** Email 2). **Do not** use two separate `case` blocks in the same email — Kit’s rich-text editor often **only processes the first block** and **escapes the second**, so recipients see literal `{% case %} …` text.
+**Root cause (common):** Kit’s **sequence email editor** (Markdown / rich text) often **does not execute** pasted **`{% … %}`** Liquid control flow reliably. **`{{ … }}` merge tags** usually still work. Symptoms: **only** the `{% else %}` block shows, or **`{% when %}`, `{% endcase %}` appear as literal text** in the inbox. This is an editor/template limitation, not necessarily wrong subscriber data.
 
-**If the fallback** (“everyone’s skin story…”) **appears for everyone:**
+**Reliable fix:** Use **Email 2 Option B** in **`docs/email-sequences.md`** — **no** `{% %}` tags, only **`{{ subscriber.skin_concern }}`** and other merge tags. Branching copy is optional; ship Option B first.
+
+**If you keep Option A (branching):**
+
+1. Prefer **`subscriber.custom_fields.skin_concern`** with a fallback:  
+   `{% assign quiz_concern = subscriber.custom_fields.skin_concern | default: subscriber.skin_concern | strip %}` then `{% case quiz_concern %}`. See **`docs/email-sequences.md`** Email 2 Option A.
+2. **Do not** use two separate `case` blocks in one email.
+3. Insert conditionals via Kit’s **@ / personalization** UI when available instead of pasting raw Liquid.
+
+**If the generic fallback** (“everyone’s skin story…”) **still appears for everyone** (and you’re not seeing raw tags):
 
 1. **Subscriber profile in Kit** — Open the contact → confirm **Skin concern** (field key `skin_concern`) is set to one of: `acne`, `aging`, `dark-spots`, `redness`, `dullness` (exact spelling; hyphen in `dark-spots`). If it’s blank, the quiz didn’t save fields: see (4) below.
-2. **Preview / test email** — Use **Preview as subscriber** and pick someone who has custom fields filled. A quick **test send** sometimes doesn’t attach the same data as a live sequence send; the profile page is the source of truth.
-3. **Custom field key** — The field in Kit must use the key **`skin_concern`** (same as the API). If the field was created with another key, Liquid won’t match.
-4. **API subscribe failed silently** — If `skin_concern` (or other fields) weren’t valid when the subscriber was created, `subscribeToKit` may have **retried email-only** (`src/lib/kit.ts`). Check Vercel logs for that email’s `POST /api/quiz/submit` response: **`kitSubscribed: true`** and no field-related errors. Re-run the quiz after fixing fields in Kit, or edit the subscriber and add `skin_concern` manually for testing.
+2. **Preview / test email** — Use **Preview as subscriber** and pick someone who has custom fields filled.
+3. **Custom field key** — The field in Kit must use the key **`skin_concern`** (same as the API).
+4. **API subscribe failed silently** — If fields weren’t valid when the subscriber was created, `subscribeToKit` may have **retried email-only** (`src/lib/kit.ts`). Check Vercel logs for **`kitSubscribed: true`**.
 
-**If raw Liquid** (`{% … %}`) **appears in the received email:** The editor stored tags as plain text or HTML-escaped them. **Paste** the template again with **paste without formatting** (Ctrl+Shift+V), use **one** `case` block only, and put `{% case %}` on its **own line** (not on the same line as `{% when %}`). If Kit offers a **code / HTML** body mode, use it for the Liquid block.
+**If raw Liquid** (`{% … %}`) **appears in the received email:** Switch to **Option B**, or paste with **paste without formatting** (Ctrl+Shift+V), one `case` block, `{% assign %}` / `{% case %}` / `{% endcase %}` each on its **own line**, and avoid broken markdown like `**you:**Salicylic**` (no space after colon inside bold).
 
 ---
 

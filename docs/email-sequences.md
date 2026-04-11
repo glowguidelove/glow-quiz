@@ -81,11 +81,48 @@ The GlowGuide Team
 
 **Preview:** Practical science — matched to your quiz results
 
-**Kit:** Send **2 days** after the previous email. Uses **one** `{% case subscriber.skin_concern %}` block only — Kit’s rich editor often **stops processing Liquid** after a `---` or in a **second** `case` block, which shows raw `{% … %}` in the inbox.
+**Kit:** Send **2 days** after the previous email.
 
-**Paste:** Prefer **plain-text / Markdown** mode. Paste **without formatting** (e.g. Ctrl+Shift+V). Put `{% case %}` on its **own line** (not on the same line as `{% when %}`). If tags still appear as text, toggle **HTML** or **code** view in Kit and remove any `&lt;` / `&lt;%` escaping.
+**Important:** Kit’s **Markdown / rich-text** editor often **does not run** pasted `{% … %}` Liquid (you’ll see **raw tags** in the inbox or only the `{% else %}` branch). **`{{ … }}` merge tags usually still work.** If branching keeps failing, use **Option B** below (no `{% %}` — only merge tags). That is the reliable path until Kit support confirms Liquid control flow in your template.
 
-**If you only see the generic fallback:** See **`docs/kit-email-setup.md`** → *Troubleshooting: Liquid*.
+---
+
+#### Option B — paste this if `{% case %}` fails (recommended for Kit)
+
+One body, **no** Liquid logic — only `{{ }}`. The quiz value for concern appears as the slug (e.g. `redness`, `dark-spots`); that’s OK for v1.
+
+```
+Hey {{ subscriber.first_name | default: "there" }},
+
+A couple of days ago you told us your top focus is **{{ subscriber.skin_concern }}** — here’s what’s going on **under the surface**, and why the *right* products move the needle faster than random tries.
+
+---
+
+### What’s really happening
+
+Most skin goals come down to **barrier health**, **consistent actives** at sensible strengths, and **sun protection** — not a bathroom cabinet full of half-used products. Your quiz narrows the story to what you said matters most, and your GlowGuide routine turns that into **specific picks** (not generic “best sellers”).
+
+---
+
+### Where to look next
+
+Your personalized routine spells out **which ingredients** we’re leaning on for *your* profile and why — at concentrations that are meant to do something, not just decorate a label.
+
+**[See your full routine again →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
+
+---
+
+**To clearer days,**  
+GlowGuide
+```
+
+---
+
+#### Option A — branching (try only if Option B is too generic)
+
+Use **Kit’s personalization / @ menu** to insert conditionals when possible instead of pasting raw Liquid. Read **`docs/kit-email-setup.md`** §8.
+
+This version uses **`subscriber.custom_fields.skin_concern`** (Kit’s documented path for custom fields) plus a fallback, then **one** `case`. Avoid adjacent `**` markdown that merges into `you:**Salicylic**` (that can confuse the editor). Put `{% assign %}`, `{% case %}`, and `{% endcase %}` each on their **own line**.
 
 ```
 Hey {{ subscriber.first_name | default: "there" }},
@@ -96,46 +133,47 @@ A couple of days ago you told us what you’re focused on — here’s what’s 
 
 ### What’s really happening
 
-{% case subscriber.skin_concern %}
+{% assign quiz_concern = subscriber.custom_fields.skin_concern | default: subscriber.skin_concern | strip %}
+{% case quiz_concern %}
 {% when "acne" %}
 Clogged pores + bacteria + oil production are the classic trio behind breakouts. Stress, hormones, and heavy occlusive products can tip you into new spots — even when you’re “doing everything right.”
 
 The goal isn’t to wage war on your face daily; it’s to **clear congestion gently**, keep bacteria in check, and support your barrier so your skin can heal between flares. After a few consistent weeks, you’re usually looking for fewer new lesions, calmer texture, and less post-breakout staining.
 
-**The ingredient that matters for you:** **Salicylic acid (BHA)** or **niacinamide** — depending on your routine — for congestion and oil balance without wrecking your barrier.
+The ingredient that matters for you: Salicylic acid (BHA) or niacinamide — depending on your routine — for congestion and oil balance without wrecking your barrier.
 
 {% when "aging" %}
 Fine lines and loss of firmness usually come from a mix of **collagen slowdown**, sun damage, and dehydration — not from “bad genes” alone. Skin can look older faster when the barrier is stressed or when actives are skipped in favor of heavy creams that don’t actually treat causes.
 
 What “good” looks like: **smoother texture**, more even tone, and skin that feels bouncier — typically over several weeks as cell turnover and collagen support catch up. Consistency beats intensity; your routine is built around that idea.
 
-**The ingredient that matters for you:** **Retinoids / retinol** (where appropriate) or **peptides** — your routine highlights what fits *your* sensitivity and goals.
+The ingredient that matters for you: Retinoids or retinol (where appropriate) or peptides — your routine highlights what fits your sensitivity and goals.
 
 {% when "dark-spots" %}
 Dark marks are often **melanin** deposited after breakouts, sun, or irritation — not only “hyperpigmentation” in the abstract. Picking, friction, and UV without SPF can make spots linger for months.
 
 Progress is real when you pair **sun protection** with ingredients that slow excess pigment and even tone — most people notice a shift in *patchiness* before spots vanish completely. Patience + the right actives beats harsh scrubbing.
 
-**The ingredient that matters for you:** **Niacinamide**, **vitamin C**, or **azelaic acid** — chosen to target uneven tone without stripping.
+The ingredient that matters for you: Niacinamide, vitamin C, or azelaic acid — chosen to target uneven tone without stripping.
 
 {% when "redness" %}
 Persistent redness is often a **barrier** and **reactivity** story — heat, harsh cleansers, strong acids, and even overwashing can keep you flushed. Sometimes there’s rosacea-style sensitivity; sometimes it’s simply a stripped barrier yelling for calm.
 
 The win is skin that **stays calmer day to day** — less sting after products, less patchy flush, and texture that feels less “angry.” That usually comes from fewer triggers + barrier-friendly care, not from piling on new actives every night.
 
-**The ingredient that matters for you:** **Niacinamide**, **azelaic acid**, or **barrier-support** ingredients — calm first, actives second.
+The ingredient that matters for you: Niacinamide, azelaic acid, or barrier-support ingredients — calm first, actives second.
 
 {% when "dullness" %}
 Dullness is usually **dead cell buildup**, uneven texture, dehydration, or a mix — so skin doesn’t reflect light evenly. It’s not always “lack of glow serum”; often it’s exfoliation balance + moisture + sun protection.
 
 After a few weeks of the right rhythm, people usually see **brighter tone** and smoother makeup application — your skin looks more “lit from within” when the surface is even and hydrated.
 
-**The ingredient that matters for you:** **Gentle exfoliation (AHAs)** or **vitamin C** — paired with hydration so skin looks bright, not stripped.
+The ingredient that matters for you: Gentle exfoliation (AHAs) or vitamin C — paired with hydration so skin looks bright, not stripped.
 
 {% else %}
 Everyone’s skin story is a little different — but almost always, progress comes from **consistent** steps matched to your goals, not from constantly swapping products. Your quiz results narrow that down for you.
 
-**The ingredient that matters for you:** Ingredients matched in **your** personalized routine — see the link below for exact picks.
+The ingredient that matters for you: See the exact picks in your routine link below.
 
 {% endcase %}
 
