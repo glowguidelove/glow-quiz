@@ -237,27 +237,29 @@ Your picks are already sequenced for **your** profile — step by step, with sho
 
 ### Email 4 — Day 10: "Real Results After 30 Days"
 
-**Subject:** What actually happens in the first 30 days
+**Subject:** What actually happens in your first 30 days
 
-**Preview:** The week-by-week timeline (no fluff)
+**Preview:** Week by week — no hype, just what to expect
+
+**Kit:** Send **5 days** after Email 3 (day 10 from sequence start). Same rules as Email 2 Option B: **merge tags only**, no `{% %}`, and **do not** wrap `{{ … }}` in `**bold**`.
 
 ```
 Hey {{ subscriber.first_name | default: "there" }},
 
-New routine — **does anything really change?** Here’s the honest week-by-week picture (and why patience beats panic-purchasing).
+New routine — **does anything really change?** Here’s the honest week-by-week picture, and why patience beats panic-purchasing.
 
 ---
 
 ### Your first 30 days
 
 **Week 1 — Adjustment**  
-Texture and feel can shift first; a little purging or dryness can happen as skin recalibrates.
+Texture and feel can shift first. A little purging or dryness can show up while skin recalibrates — that’s not failure; it’s change.
 
-**Week 2 — Actives kick in**  
-Ingredients like **[their recommended treatment / e.g. retinoid, exfoliant]** start to show up in clarity, tone, or congestion.
+**Week 2 — Actives start to show up**  
+The ingredients in **your** GlowGuide picks (think exfoliants, retinoids, barrier support — whatever your routine actually calls for) begin to show in clarity, tone, or congestion. Small wins first.
 
 **Weeks 3–4 — Turnover catches up**  
-Roughly **one full cell cycle** (~28 days) — this is where steady routines pull ahead of “I tried it twice.”
+Roughly **one full cell cycle** (~28 days) is when steady routines pull ahead of “I tried it twice.” This is where consistency pays off.
 
 ---
 
@@ -265,7 +267,7 @@ Roughly **one full cell cycle** (~28 days) — this is where steady routines pul
 
 **Consistency** beats intensity. Same routine, most days — that’s the win.
 
-**[Open your personalized routine →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
+**[See your personalized routine →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
 
 ---
 
