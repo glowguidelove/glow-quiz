@@ -108,27 +108,30 @@ The quiz already sends **custom fields** (`skin_type`, `skin_concern`, `routine_
 1. **One automation:** **Joins a form** → choose **GlowGuide Quiz** → **Subscribe to sequence** → your single nurture sequence. (Optional second action: **Apply tag** if the UI allows in the same flow.)
 2. **Different copy per result:** Edit each email **inside that sequence** and use **Liquid conditionals** on subscriber fields so the body changes by concern or skin type — still one sequence, one automation.
 
-**Exact values** the app sends (match these in `{% if %}` — typos break branches):
+**Exact values** the app sends (match these in Liquid — typos break branches):
 
 | Field | Values |
 |--------|--------|
 | `skin_concern` | `acne`, `aging`, `dark-spots`, `redness`, `dullness` |
 | `skin_type` | `oily`, `dry`, `combination`, `sensitive`, `normal` |
 
-Example (day-2 email — replace paragraphs per concern):
+Example (day-2 email — prefer `{% case %}` in Kit; see **`docs/email-sequences.md`** Email 2):
 
 ```liquid
-{% if subscriber.skin_concern == "acne" %}
+{% case subscriber.skin_concern %}
+{% when "acne" %}
 <p>Your acne-specific education...</p>
-{% elsif subscriber.skin_concern == "aging" %}
+{% when "aging" %}
 <p>Your aging-specific education...</p>
-{% elsif subscriber.skin_concern == "dark-spots" %}
+{% when "dark-spots" %}
 <p>...</p>
-{% elsif subscriber.skin_concern == "redness" %}
+{% when "redness" %}
 <p>...</p>
-{% elsif subscriber.skin_concern == "dullness" %}
+{% when "dullness" %}
 <p>...</p>
-{% endif %}
+{% else %}
+<p>Fallback if field is empty.</p>
+{% endcase %}
 ```
 
 Use **HTML** paragraphs or **Markdown** sections per branch depending on what your Kit editor accepts. Test with subscribers who have each `skin_concern` value.
