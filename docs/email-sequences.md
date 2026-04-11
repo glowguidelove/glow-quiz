@@ -3,7 +3,11 @@
 Set these up in Kit (ConvertKit) as automated sequences.
 Each sequence triggers based on quiz completion data stored as subscriber custom fields.
 
-**Kit Liquid:** Use `{{ subscriber.field_key }}` for custom fields (e.g. `{{ subscriber.routine_id }}`, `{{ subscriber.skin_type }}`). First name: `{{ subscriber.first_name | default: "there" }}` — use the **`default`** filter (not `||`, which isn’t valid Liquid). Match keys to **`docs/kit-email-setup.md`**.
+**Kit Liquid:** Use `{{ subscriber.field_key }}` for custom fields (e.g. `{{ subscriber.routine_id }}`, `{{ subscriber.skin_type }}`). First name with a fallback:
+
+`{{ subscriber.first_name | default: "there" }}`
+
+Use the **`default`** filter (not `||`, which isn’t valid Liquid). The **pipe `|` is required** between `first_name` and `default`. If Kit merges the tag into `first_namedefault` after paste, the `|` was dropped — delete the tag and retype the `|` by hand. Match keys to **`docs/kit-email-setup.md`**.
 
 **Markdown in Kit:** Subjects are plain text. Bodies below use Markdown (`**bold**`, lists, `---` dividers); paste into Kit’s Markdown-capable editor.
 
@@ -16,6 +20,12 @@ Each sequence triggers based on quiz completion data stored as subscriber custom
 **Trigger:** Immediately after quiz submission
 
 ### Email 1 — Instant: "Your Personalized Skincare Routine"
+
+**Kit settings (this email):**
+
+- **Send:** **Immediately** / **0 days** from when the subscriber enters the sequence — not “after 1 day.”
+- **Published:** On when you go live.
+- **Preview text:** Optional; use the line below in Kit’s preview field if available.
 
 **Subject:** Your skincare routine is ready, {{ subscriber.first_name | default: "gorgeous" }} ✨
 
@@ -30,7 +40,7 @@ You just took the **GlowGuide Skin Quiz** — we’ve matched you with a routine
 
 ### Your routine is ready
 
-Step-by-step picks, honest why-we-chose-it notes, and **shop links** on every product.
+Step-by-step picks, honest notes on **why we chose each product**, and **shop links** on every step.
 
 **[View your full routine →](https://glowguide.love/quiz/results?r={{ subscriber.routine_id }})**
 
