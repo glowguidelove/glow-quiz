@@ -3,6 +3,8 @@
 Set these up in Kit (ConvertKit) as automated sequences.
 Each sequence triggers based on quiz completion data stored as subscriber custom fields.
 
+**Different quiz results:** On the **free Newsletter plan** you still use **one** form-triggered automation and **one** sequence — vary copy with **Liquid `{% if subscriber.skin_concern == '…' %}`** (and/or `skin_type`) inside each email. Separate automations per result need **Creator+**. See **`docs/kit-email-setup.md`** → *Different quiz results*.
+
 **Kit Liquid:** Use `{{ subscriber.field_key }}` for custom fields (e.g. `{{ subscriber.routine_id }}`, `{{ subscriber.skin_type }}`). First name with a fallback:
 
 `{{ subscriber.first_name | default: "there" }}`

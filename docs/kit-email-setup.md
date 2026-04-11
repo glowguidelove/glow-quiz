@@ -99,6 +99,44 @@ Kit’s **Newsletter** (free) tier is built for growth up to **10,000** subscrib
 
 Official detail: [Visual Automations on the Newsletter Plan](https://help.kit.com/en/articles/9053626-visual-automations-on-the-newsletter-plan), [The Kit Newsletter Plan](https://help.kit.com/en/articles/9053602-the-kit-newsletter-plan).
 
+### Different quiz results — one automation on free, branching inside the sequence
+
+The quiz already sends **custom fields** (`skin_type`, `skin_concern`, `routine_id`, …) and optional **tags** (see `KIT_TAGS` in `src/lib/kit.ts`). That data is how you vary copy per person.
+
+**Newsletter (free):** You only get **one** basic automation and **one** sequence. You **cannot** build “automation per result” as five separate visual flows. Do this instead:
+
+1. **One automation:** **Joins a form** → choose **GlowGuide Quiz** → **Subscribe to sequence** → your single nurture sequence. (Optional second action: **Apply tag** if the UI allows in the same flow.)
+2. **Different copy per result:** Edit each email **inside that sequence** and use **Liquid conditionals** on subscriber fields so the body changes by concern or skin type — still one sequence, one automation.
+
+**Exact values** the app sends (match these in `{% if %}` — typos break branches):
+
+| Field | Values |
+|--------|--------|
+| `skin_concern` | `acne`, `aging`, `dark-spots`, `redness`, `dullness` |
+| `skin_type` | `oily`, `dry`, `combination`, `sensitive`, `normal` |
+
+Example (day-2 email — replace paragraphs per concern):
+
+```liquid
+{% if subscriber.skin_concern == "acne" %}
+<p>Your acne-specific education...</p>
+{% elsif subscriber.skin_concern == "aging" %}
+<p>Your aging-specific education...</p>
+{% elsif subscriber.skin_concern == "dark-spots" %}
+<p>...</p>
+{% elsif subscriber.skin_concern == "redness" %}
+<p>...</p>
+{% elsif subscriber.skin_concern == "dullness" %}
+<p>...</p>
+{% endif %}
+```
+
+Use **HTML** paragraphs or **Markdown** sections per branch depending on what your Kit editor accepts. Test with subscribers who have each `skin_concern` value.
+
+**If you truly want separate sequences** (e.g. one full drip for acne, another for aging): that requires **multiple sequences** and usually **multiple automations** (e.g. **Tag is added** → sequence X). That pattern fits **Creator** and up, not the free Newsletter cap. The app already applies **skin** and **concern** tags when `KIT_TAGS` IDs are set — after upgrading, you can wire **Tag is added → [matching sequence]** for each segment.
+
+**“Custom field” as automation entry:** Kit may offer starting when a custom field is set. For GlowGuide, the quiz subscribes via the **form** in one step; fields arrive with the subscriber. **Joins a form** is still the simplest trigger — you don’t need a second automation per field.
+
 ---
 
 ## 6. Compliance
@@ -123,5 +161,5 @@ Official detail: [Visual Automations on the Newsletter Plan](https://help.kit.co
 - [ ] `KIT_API_KEY` and `KIT_FORM_ID` in Vercel Production  
 - [ ] Custom fields created with matching keys  
 - [ ] Tags created; IDs filled into `KIT_TAGS` in `kit.ts`  
-- [ ] Welcome or results sequence connected to form or tags  
+- [ ] One automation: **Joins GlowGuide Quiz form** → **subscribe to** your nurture sequence (free plan: only one); optional Liquid branches per `skin_concern` / `skin_type` inside sequence emails  
 - [ ] `NEXT_PUBLIC_SITE_URL` = live URL  
