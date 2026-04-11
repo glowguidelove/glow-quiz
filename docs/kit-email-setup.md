@@ -81,6 +81,24 @@ See **`docs/email-sequences.md`** for drip templates. Use custom fields as `{{ s
 
 Set **`NEXT_PUBLIC_SITE_URL`** to your live domain so links in emails match production.
 
+### Newsletter plan ($0) — automation limits (verify on [Kit pricing](https://kit.com/pricing))
+
+Kit’s **Newsletter** (free) tier is built for growth up to **10,000** subscribers but **caps automation**:
+
+| On Newsletter (free) | Notes |
+|----------------------|--------|
+| **1 Sequence** | **Unlimited emails inside that sequence** — put your whole quiz drip (day 0, 2, 5, 10…) in **one** sequence. |
+| **1 basic Visual Automation** | **Action-based** steps only; can connect to **that one** sequence. Entry examples: *joins form*, *added to tag*. No advanced branching (conditions/events) — those are **Creator+**. |
+| **Broadcasts** | **Unlimited** — use for weekly one-off sends until you upgrade. |
+
+**What to build on free (GlowGuide):**
+
+1. **Single sequence** — e.g. “Quiz results + nurture” containing all emails from **`docs/email-sequences.md`** Sequence 1 (and optionally later “weeks” as delayed steps in the *same* sequence if you don’t want manual broadcasts yet).
+2. **Single automation** — e.g. **Joins form “GlowGuide Quiz”** → **Add to sequence** (above). Optional extra step: **Add tag** (e.g. `quiz-completer`) if you still have tag budget in the UI.
+3. **Weekly / ongoing content** — on free, run as **Broadcasts** to your full list or a segment, **or** upgrade to **Creator** for multiple sequences + full Visual Automations (rules, splits, RSS, etc.).
+
+Official detail: [Visual Automations on the Newsletter Plan](https://help.kit.com/en/articles/9053626-visual-automations-on-the-newsletter-plan), [The Kit Newsletter Plan](https://help.kit.com/en/articles/9053602-the-kit-newsletter-plan).
+
 ---
 
 ## 6. Compliance
