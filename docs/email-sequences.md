@@ -13,6 +13,17 @@ Use the **`default`** filter (not `||`, which isn’t valid Liquid). The **pipe 
 
 **Results links:** `https://glowguide.love/quiz/results?r={{ subscriber.routine_id }}` (or `www` if that’s your canonical domain everywhere).
 
+**Branding (optional):** Matches `src/app/globals.css`. Use Kit’s **Text color** (and template link colors if available) lightly — email clients vary; contrast and readability come first.
+
+| Use | Hex | Notes |
+|-----|-----|--------|
+| Body / most text | `#2D2D2D` | Warm charcoal — aligns with the site; softer than `#000000`. |
+| Accent 1 (headings, one emphasis line) | `#D4849A` | Primary rose — use for **“Your routine is ready”**-style subheads or a short lead line, not whole paragraphs. |
+| Accent 2 (alternate highlight) | `#C9A96E` | Gold — sparingly, e.g. one line or divider-adjacent text. |
+| Links | `#B8647E` or `#D4849A` | If Kit’s default blue feels off-brand, set link color in the **email / template** settings when Kit exposes it; otherwise manual color on the CTA line only. |
+
+Skip coloring every bullet and the footer — neutral body + **one** brand accent per section is enough.
+
 ---
 
 ## Sequence 1: Quiz Results Delivery (All subscribers)
