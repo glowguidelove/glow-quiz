@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { subscribeToKit, tagsForQuizAnswers } from "@/lib/kit";
+import { SKIN_CONCERN_LABEL } from "@/lib/quiz-kit-fields";
 import { sendServerEvent, hashEmail } from "@/lib/pixel";
 import type { QuizAnswers } from "@/types";
 
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest) {
     fields: {
       skin_type: answers.skinType,
       skin_concern: answers.concern,
+      skin_concern_label: SKIN_CONCERN_LABEL[answers.concern],
       sensitivity: answers.sensitivity,
       age_range: answers.ageRange,
       routine_level: answers.routineLevel,

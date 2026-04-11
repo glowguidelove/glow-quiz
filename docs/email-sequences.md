@@ -42,7 +42,7 @@ Skip coloring every bullet and the footer — neutral body + **one** brand accen
 
 **Subject:** Your skincare routine is ready, {{ subscriber.first_name | default: "gorgeous" }} ✨
 
-**Preview:** Matched to your {{ subscriber.skin_type }} skin · {{ subscriber.skin_concern }}
+**Preview:** Matched to your {{ subscriber.skin_type }} skin · {{ subscriber.skin_concern_label | default: subscriber.skin_concern }}
 
 ```
 Hey {{ subscriber.first_name | default: "there" }},
@@ -62,7 +62,7 @@ Step-by-step picks, honest notes on **why we chose each product**, and **shop li
 ### Your profile at a glance
 
 - **Skin type:** {{ subscriber.skin_type }}
-- **Top concern:** {{ subscriber.skin_concern }}
+- **Top concern:** {{ subscriber.skin_concern_label | default: subscriber.skin_concern }}
 - **Budget:** {{ subscriber.budget }}
 
 ---
@@ -89,12 +89,12 @@ The GlowGuide Team
 
 #### Option B — paste this if `{% case %}` fails (recommended for Kit)
 
-One body, **no** Liquid logic — only `{{ }}`. The quiz value for concern appears as the slug (e.g. `redness`, `dark-spots`); that’s OK for v1.
+One body, **no** Liquid logic — only `{{ }}`. Use **`skin_concern_label`** for readable copy (e.g. “Dark spots”); it’s set by the quiz API. **`default`** covers older subscribers who only have the slug field.
 
 ```
 Hey {{ subscriber.first_name | default: "there" }},
 
-A couple of days ago you told us your top focus is **{{ subscriber.skin_concern }}** — here’s what’s going on **under the surface**, and why the *right* products move the needle faster than random tries.
+A couple of days ago you told us your top focus is **{{ subscriber.skin_concern_label | default: subscriber.skin_concern }}** — here’s what’s going on **under the surface**, and why the *right* products move the needle faster than random tries.
 
 ---
 
@@ -289,6 +289,7 @@ embedded in the educational content.
 2. Create Custom Fields:
    - skin_type
    - skin_concern
+   - skin_concern_label
    - sensitivity
    - age_range
    - routine_level
