@@ -159,14 +159,18 @@ Use **HTML** paragraphs or **Markdown** sections per branch depending on what yo
 
 ---
 
-## 8. Troubleshooting: Liquid shows the `{% else %}` / generic branch
+## 8. Troubleshooting: Liquid (`else` branch, or raw `{%` tags in the inbox)
 
-Sequence emails use `{% case subscriber.skin_concern %}` (see **`docs/email-sequences.md`**). If the **fallback** copy appears for everyone:
+Sequence emails use **one** `{% case subscriber.skin_concern %}` … `{% endcase %}` block (see **`docs/email-sequences.md`** Email 2). **Do not** use two separate `case` blocks in the same email — Kit’s rich-text editor often **only processes the first block** and **escapes the second**, so recipients see literal `{% case %} …` text.
+
+**If the fallback** (“everyone’s skin story…”) **appears for everyone:**
 
 1. **Subscriber profile in Kit** — Open the contact → confirm **Skin concern** (field key `skin_concern`) is set to one of: `acne`, `aging`, `dark-spots`, `redness`, `dullness` (exact spelling; hyphen in `dark-spots`). If it’s blank, the quiz didn’t save fields: see (4) below.
 2. **Preview / test email** — Use **Preview as subscriber** and pick someone who has custom fields filled. A quick **test send** sometimes doesn’t attach the same data as a live sequence send; the profile page is the source of truth.
 3. **Custom field key** — The field in Kit must use the key **`skin_concern`** (same as the API). If the field was created with another key, Liquid won’t match.
 4. **API subscribe failed silently** — If `skin_concern` (or other fields) weren’t valid when the subscriber was created, `subscribeToKit` may have **retried email-only** (`src/lib/kit.ts`). Check Vercel logs for that email’s `POST /api/quiz/submit` response: **`kitSubscribed: true`** and no field-related errors. Re-run the quiz after fixing fields in Kit, or edit the subscriber and add `skin_concern` manually for testing.
+
+**If raw Liquid** (`{% … %}`) **appears in the received email:** The editor stored tags as plain text or HTML-escaped them. **Paste** the template again with **paste without formatting** (Ctrl+Shift+V), use **one** `case` block only, and put `{% case %}` on its **own line** (not on the same line as `{% when %}`). If Kit offers a **code / HTML** body mode, use it for the Liquid block.
 
 ---
 
