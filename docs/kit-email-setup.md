@@ -187,6 +187,23 @@ Use **HTML** paragraphs or **Markdown** sections per branch depending on what yo
 
 ---
 
+## 9. Deliverability (avoid spam — before you publish the sequence)
+
+**Why `@gmail.com` as the “From” address hurts:** Kit sends mail **from Kit’s infrastructure**, not from Google’s. Using a free **Gmail address** as the sender usually means **weak or misaligned authentication** (SPF/DKIM/DMARC don’t line up with `gmail.com` the way Google expects for bulk mail). Inboxes often **flag or spam-folder** that pattern. Gmail is also **not** intended as a bulk “from” identity for a brand.
+
+**What to do instead:**
+
+1. **Use an address on your own domain** (e.g. `hello@glowguide.love` or `hi@glowguide.love`). Same brand as your site builds trust with filters and subscribers.
+2. **In Kit:** **Settings → Email / Sending** (wording varies) → set **default sending address** and **reply-to** to that domain address. Complete Kit’s **domain authentication** so you add the DNS records they give you (**SPF**, **DKIM**, often **DMARC**). Kit’s guide: search Kit Help for **“authenticate domain”** or **“DNS”** — follow their records exactly at your DNS host (where `glowguide.love` is managed).
+3. **Wait for verification** — don’t blast the full sequence until Kit shows the domain **verified** / authenticated.
+4. **Align the story:** Your quiz site, privacy policy, and “from” domain should match (you already use **glowguide.love** on the site). Avoid a totally different domain in the From line.
+5. **Footer & compliance:** Kit adds unsubscribe; keep a **real physical address** in the footer (required in many regions). Use your business address, not a random placeholder.
+6. **Optional:** A dedicated subdomain or mailbox (e.g. `newsletter@`) is fine; consistency matters more than the local part.
+
+**Tests:** After DNS propagates, send **real** test emails to **Gmail**, **Outlook**, and **Apple Mail** and check **Promotions vs Primary vs Spam**. One test is not enough — inbox placement varies.
+
+---
+
 ## Quick checklist
 
 - [ ] `KIT_API_KEY` and `KIT_FORM_ID` in Vercel Production  
@@ -194,3 +211,4 @@ Use **HTML** paragraphs or **Markdown** sections per branch depending on what yo
 - [ ] Tags created; IDs filled into `KIT_TAGS` in `kit.ts`  
 - [ ] One automation: **Joins GlowGuide Quiz form** → **subscribe to** your nurture sequence (free plan: only one); optional Liquid branches per `skin_concern` / `skin_type` inside sequence emails  
 - [ ] `NEXT_PUBLIC_SITE_URL` = live URL  
+- [ ] **Sending from** an address **@ your domain** (not `@gmail.com`); **DNS authenticated** in Kit (SPF/DKIM/DMARC per Kit’s instructions) before high-volume sends  
