@@ -106,7 +106,7 @@ export default function Quiz() {
   }, [currentStep, animating]);
 
   const handleEmailSubmit = useCallback(
-    async (email: string) => {
+    async (email: string, firstName?: string) => {
       setPhase("submitting");
 
       const fullAnswers = answers as QuizAnswers;
@@ -122,6 +122,7 @@ export default function Quiz() {
           body: JSON.stringify({
             answers: fullAnswers,
             email,
+            firstName: firstName ?? undefined,
             routineId: routine.id,
             eventId,
             utm: getUtmParams(),

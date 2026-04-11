@@ -6,6 +6,7 @@ import type { QuizAnswers } from "@/types";
 interface QuizSubmitBody {
   answers: QuizAnswers;
   email: string;
+  firstName?: string;
   routineId: string;
   eventId: string;
   utm?: Record<string, string>;
@@ -22,7 +23,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { answers, email, routineId, eventId, utm, fbc, fbp } = body;
+  const { answers, email, firstName, routineId, eventId, utm, fbc, fbp } = body;
+
+  const trimmedFirst =
+    typeof firstName === "string" ? firstName.trim().slice(0, 80) : "";
 
   if (!answers || !email || !routineId) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -32,6 +36,7 @@ export async function POST(request: NextRequest) {
 
   const kitPromise = subscribeToKit({
     email,
+    ...(trimmedFirst ? { firstName: trimmedFirst } : {}),
     tags: tagsForQuizAnswers(answers),
     fields: {
       skin_type: answers.skinType,

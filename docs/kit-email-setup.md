@@ -1,6 +1,6 @@
 # Kit (ConvertKit) — email list setup & monetization
 
-Quiz submissions POST to `/api/quiz/submit`, which adds the subscriber to **Kit** and fires **Meta CAPI** (hashed email only). This doc covers the email list side.
+Quiz submissions POST to `/api/quiz/submit`, which adds the subscriber to **Kit** (optional **first name** for `{{ subscriber.first_name }}` in emails) and fires **Meta CAPI** (hashed email only). This doc covers the email list side.
 
 ---
 
@@ -33,7 +33,7 @@ Kit only accepts field **keys** that already exist on your account. Create custo
 | `budget` | `30-75` | Upsell / drugstore vs luxury |
 | `routine_id` | `oily-acne-clinical-budget` | Link back to results: `{{NEXT_PUBLIC_SITE_URL}}/quiz/results?r={{routine_id}}` |
 
-In Kit: **Settings → Custom fields** → add each label; Kit generates keys (edit if needed to match the table).
+In Kit, custom fields are **account-wide** — you can create them from a **subscriber profile** (**+ Add field** under the name), while **editing a form**, or in some accounts under **Settings**. See Kit’s guide: [How to add Custom Fields to Subscribers](https://help.kit.com/en/articles/2502504-how-to-add-custom-fields-to-subscribers). After each field exists, **edit the field’s key** (if Kit shows it) so it matches the table **exactly** — the quiz API sends `skin_type`, `routine_id`, etc.; a mismatched key won’t populate.
 
 ---
 

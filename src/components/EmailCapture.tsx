@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 
 interface EmailCaptureProps {
-  onSubmit: (email: string) => void;
+  /** Second arg is optional first name (trimmed); empty if skipped */
+  onSubmit: (email: string, firstName?: string) => void;
   onSkip: () => void;
   isLoading: boolean;
 }
@@ -14,12 +15,14 @@ export default function EmailCapture({
   onSkip,
   isLoading,
 }: EmailCaptureProps) {
+  const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = email.trim();
+    const nameTrim = firstName.trim();
 
     if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
       setError("Please enter a valid email address.");
@@ -27,7 +30,7 @@ export default function EmailCapture({
     }
 
     setError("");
-    onSubmit(trimmed);
+    onSubmit(trimmed, nameTrim || undefined);
   };
 
   return (
@@ -46,7 +49,7 @@ export default function EmailCapture({
         .
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-8 max-w-sm mx-auto">
+      <form onSubmit={handleSubmit} className="mt-8 max-w-sm mx-auto space-y-3">
         <input
           type="email"
           value={email}
@@ -58,6 +61,20 @@ export default function EmailCapture({
           className="w-full px-4 py-3 rounded-xl border-2 border-border bg-card text-foreground placeholder:text-muted/60 focus:outline-none focus:border-primary transition-colors"
           disabled={isLoading}
           autoFocus
+        />
+        <input
+          type="text"
+          name="firstName"
+          autoComplete="given-name"
+          value={firstName}
+          onChange={(e) => {
+            setFirstName(e.target.value);
+            setError("");
+          }}
+          placeholder="First name (optional — for personalized emails)"
+          maxLength={80}
+          className="w-full px-4 py-3 rounded-xl border-2 border-border bg-card text-foreground placeholder:text-muted/60 focus:outline-none focus:border-primary transition-colors"
+          disabled={isLoading}
         />
         {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
 
