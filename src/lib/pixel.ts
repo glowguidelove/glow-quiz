@@ -31,10 +31,16 @@ export function trackEvent(
 
 export function trackCustomEvent(
   eventName: string,
-  params?: Record<string, unknown>
+  params?: Record<string, unknown>,
+  options?: { eventID?: string }
 ) {
   if (typeof window !== "undefined" && window.fbq) {
-    window.fbq("trackCustom", eventName, params);
+    const p = params ?? {};
+    if (options?.eventID) {
+      window.fbq("trackCustom", eventName, p, { eventID: options.eventID });
+    } else {
+      window.fbq("trackCustom", eventName, p);
+    }
   }
 }
 

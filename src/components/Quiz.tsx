@@ -84,10 +84,34 @@ export default function Quiz() {
         } else {
           clearProgress();
           setPhase("email");
-          trackCustomEvent("QuizComplete", {
-            skin_type: newAnswers.skinType,
-            concern: newAnswers.concern,
-          });
+          const quizCompleteEventId = generateEventId();
+          trackCustomEvent(
+            "QuizComplete",
+            {
+              skin_type: newAnswers.skinType,
+              concern: newAnswers.concern,
+            },
+            { eventID: quizCompleteEventId }
+          );
+          // CAPI duplicate so Meta can attribute quiz completes to ads (fbc/fbp + dedupe with Pixel).
+          void fetch("/api/pixel/event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              event_name: "QuizComplete",
+              event_id: quizCompleteEventId,
+              event_source_url:
+                typeof window !== "undefined" ? window.location.href : "",
+              custom_data: {
+                skin_type: newAnswers.skinType,
+                concern: newAnswers.concern,
+              },
+              user_data: {
+                fbc: buildFbc(),
+                fbp: getFbp(),
+              },
+            }),
+          }).catch(() => {});
         }
       }, 250);
     },
