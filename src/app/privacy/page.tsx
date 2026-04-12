@@ -39,6 +39,12 @@ export default function PrivacyPage() {
 
           <h3 className="text-base font-semibold text-foreground">Cookies &amp; Tracking</h3>
           <p>
+            We use <strong>Google Analytics 4</strong> to understand how visitors
+            use our site (for example, which pages are viewed and how you navigate
+            the quiz). Google processes this data according to its own privacy
+            policy. Analytics runs only if you accept cookies in our banner.
+          </p>
+          <p>
             We use the Meta (Facebook) Pixel and Conversions API to understand
             how visitors interact with our site and to improve our advertising.
             This technology may collect:

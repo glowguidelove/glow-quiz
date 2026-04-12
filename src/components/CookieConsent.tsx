@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-
-const CONSENT_KEY = "gq_cookie_consent";
+import {
+  COOKIE_CONSENT_ACCEPT_EVENT,
+  COOKIE_CONSENT_STORAGE_KEY,
+} from "@/lib/cookie-consent";
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem(CONSENT_KEY);
+    const consent = localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY);
     if (!consent) {
       const timer = setTimeout(() => setVisible(true), 1500);
       return () => clearTimeout(timer);
@@ -17,12 +19,13 @@ export default function CookieConsent() {
   }, []);
 
   const accept = () => {
-    localStorage.setItem(CONSENT_KEY, "accepted");
+    localStorage.setItem(COOKIE_CONSENT_STORAGE_KEY, "accepted");
+    document.dispatchEvent(new Event(COOKIE_CONSENT_ACCEPT_EVENT));
     setVisible(false);
   };
 
   const decline = () => {
-    localStorage.setItem(CONSENT_KEY, "declined");
+    localStorage.setItem(COOKIE_CONSENT_STORAGE_KEY, "declined");
     setVisible(false);
     // Disable Pixel tracking if user declines
     if (typeof window !== "undefined" && window.fbq) {
@@ -37,8 +40,8 @@ export default function CookieConsent() {
       <div className="max-w-2xl mx-auto bg-card border border-border rounded-2xl shadow-xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div className="flex-1 text-sm text-foreground/80">
           <p>
-            We use cookies and the Meta Pixel to personalize your experience and
-            improve our ads.{" "}
+            We use cookies, Google Analytics, and the Meta Pixel to understand
+            how you use GlowGuide and to improve our content and ads.{" "}
             <Link href="/privacy" className="text-primary hover:underline">
               Privacy Policy
             </Link>

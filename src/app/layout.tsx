@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MetaPixel from "@/components/MetaPixel";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieConsent from "@/components/CookieConsent";
 import UtmCapture from "@/components/UtmCapture";
 
@@ -64,6 +65,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <MetaPixel />
+        <GoogleAnalytics />
         <UtmCapture />
         <Header />
         <main className="flex-1">{children}</main>
